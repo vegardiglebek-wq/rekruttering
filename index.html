@@ -36,12 +36,16 @@ h3{margin:0;font-weight:400;font-size:21px;line-height:1.3;color:var(--ink-0)}
 .g8{gap:8px}.g12{gap:12px}.g16{gap:16px}.g20{gap:20px}.g28{gap:28px}
 p{margin:0}
 .muted{color:var(--ink-2)}
-nav.progress ol{list-style:none;margin:0;padding:24px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-nav.progress button{width:100%;min-height:44px;background:transparent;border:0;border-top:4px solid var(--line-1);border-radius:0;cursor:pointer;text-align:left;display:flex;align-items:baseline;gap:8px;padding:12px 0;font-family:var(--sans);font-size:14px;color:var(--ink-3)}
+nav.progress ol{list-style:none;margin:0;padding:24px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px 12px}
+nav.progress button{width:100%;min-height:44px;background:transparent;border:0;border-top:4px solid var(--line-1);border-radius:0;cursor:pointer;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 0;font-family:var(--sans);font-size:14px;color:var(--ink-3)}
 nav.progress button .lbl{text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:4px}
 nav.progress button.done{border-top-color:var(--ink-3);color:var(--ink-2)}
 nav.progress button.active{border-top-color:var(--accent);color:var(--ink-0);font-weight:500}
 nav.progress button.active .num{color:var(--accent)}
+nav.progress .row{display:flex;align-items:baseline;gap:8px}
+nav.progress .desc{font-size:14px;font-weight:400;line-height:1.45;color:var(--ink-2)}
+nav.progress.overview button{color:var(--ink-0)}
+.overviewsec{border-top:1px solid var(--line-1);padding-top:40px}
 nav.progress button:focus-visible{outline:none;box-shadow:var(--focus-ring)}
 main{padding:56px 0 0}
 .tips{background:var(--surface-sunken);border-radius:4px;padding:20px 24px}
@@ -80,7 +84,6 @@ input[type=text]:focus,textarea:focus{border-color:var(--accent);box-shadow:var(
 .msgbox p.pre{font-size:16px;line-height:1.6}
 footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-family:var(--sans);font-size:14px;color:var(--ink-2)}
 .restart{border-top:1px solid var(--line-1);padding-top:24px}
-@media (max-width:560px){nav.progress button{font-size:12px;gap:4px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -90,7 +93,7 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
   <header class="site">
     <p class="kicker">Rekruttering | Kravprofil | <a href="om.html">Om</a></p>
     <h1>Hvem leter du etter?</h1>
-    <p class="lead">Fire korte steg: behovet, oppgavene, kravene og erfaringen du ønsker. Til slutt får du en tekst du kan dele med en kollega.</p>
+    <p class="lead">Beskriv behovet, oppgavene, kravene og erfaringen du ønsker.</p>
   </header>
   <nav class="progress" aria-label="Fremdrift"><ol id="progress"></ol></nav>
   <main id="app"></main>
@@ -152,7 +155,8 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
   ];
 
   function blank() { return { behov: '', bidrag: '', krav: '', erfaring: '' }; }
-  var st = { step: 0, tittel: '', overskrift: '', values: blank(), extras: blank() };
+  var st = { step: -1, tittel: '', overskrift: '', values: blank(), extras: blank() };
+  var DESCS = ['Hvorfor trenger dere rollen, og hva blir bedre når den er på plass?', 'Typiske oppgaver og ansvar i en vanlig uke.', 'Det som er helt nødvendig. Må, ikke bør.', 'Erfaringen du ønsker, der kandidaten kjenner seg igjen.', 'Kopier teksten og be en kollega om innspill.'];
 
   var app = document.getElementById('app');
   var progress = document.getElementById('progress');
@@ -169,14 +173,17 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
   }
   function erfaringText(s) { return 'Vi ser etter deg som har ' + clean(s).replace(/^\s*(…|\.\.\.)\s*/, ''); }
 
-  function secIndex() { return Math.min(Math.floor(st.step / 2), 3); }
+  function secIndex() { return Math.max(0, Math.min(Math.floor(st.step / 2), 3)); }
+  function isOverview() { return st.step < 0; }
   function isDone() { return st.step >= 8; }
 
   function go(step) { st.step = step; render(); window.scrollTo({ top: 0 }); }
 
   /* ---------- progress ---------- */
   function renderProgress() {
-    var stageIdx = isDone() ? 4 : secIndex();
+    var ov = isOverview();
+    var stageIdx = ov ? -1 : (isDone() ? 4 : secIndex());
+    progress.parentNode.classList.toggle('overview', ov);
     var labels = SECTIONS.map(function (s) { return s.stage; }).concat(['Del']);
     progress.innerHTML = labels.map(function (label, i) {
       var active = i === stageIdx;
@@ -184,7 +191,8 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
       var cls = active ? 'active' : (done ? 'done' : '');
       return '<li style="display:flex"><button type="button" class="' + cls + '" data-stage="' + i + '"' +
         (active ? ' aria-current="step"' : '') + ' aria-label="Gå til steg ' + (i + 1) + ': ' + label + '">' +
-        '<span class="num">' + (i + 1) + '</span><span class="lbl">' + label + '</span></button></li>';
+        '<span class="row"><span class="num">' + (i + 1) + '</span><span class="lbl">' + label + '</span></span>' +
+        (ov ? '<span class="desc">' + DESCS[i] + '</span>' : '') + '</button></li>';
     }).join('');
   }
   progress.addEventListener('click', function (e) {
@@ -310,12 +318,23 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
     '</section>';
   }
 
+  function overviewStep() {
+    return '<section class="stack g28 overviewsec">' +
+      '<div class="stack g12"><span class="bar" aria-hidden="true"></span><p class="kicker">Slik fungerer guiden</p>' +
+      '<h2>Fra behov til ferdig stillingsannonse</h2>' +
+      '<p style="max-width:60ch">Gå gjennom stegene i rekkefølge, eller velg det steget du vil se på. Du kan hoppe over felt og komme tilbake senere.</p></div>' +
+      '<div class="actions"><button type="button" class="btn btn-primary" data-act="start">Start med steg 1: Behov</button></div>' +
+    '</section>';
+  }
+
   function render() {
     renderProgress();
     var idx = secIndex(), sec = SECTIONS[idx];
-    if (isDone()) app.innerHTML = doneStep();
-    else if (st.step % 2 === 0) app.innerHTML = inputStep(sec);
-    else app.innerHTML = confirmStep(sec, idx);
+    var back = '<div style="margin:-24px 0 24px"><button type="button" class="btn btn-link" data-act="overview">Vis oversikten</button></div>';
+    if (isOverview()) app.innerHTML = overviewStep();
+    else if (isDone()) app.innerHTML = back + doneStep();
+    else if (st.step % 2 === 0) app.innerHTML = back + inputStep(sec);
+    else app.innerHTML = back + confirmStep(sec, idx);
     // set field values safely (not via HTML)
     app.querySelectorAll('[data-bind]').forEach(function (el) {
       var b = el.getAttribute('data-bind');
@@ -361,7 +380,9 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
     var b = e.target.closest('[data-act]');
     if (!b) return;
     var act = b.getAttribute('data-act'), sec = SECTIONS[secIndex()];
-    if (act === 'next') go(st.step + 1);
+    if (act === 'start') go(0);
+    else if (act === 'overview') go(-1);
+    else if (act === 'next') go(st.step + 1);
     else if (act === 'back') go(Math.max(0, st.step - 1));
     else if (act === 'confirm') {
       var extra = st.extras[sec.key].trim();
@@ -373,7 +394,7 @@ footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0
     }
     else if (act === 'edit') go(7);
     else if (act === 'copy') copyText();
-    else if (act === 'reset') { st = { step: 0, tittel: '', overskrift: '', values: blank(), extras: blank() }; go(0); }
+    else if (act === 'reset') { st = { step: -1, tittel: '', overskrift: '', values: blank(), extras: blank() }; go(-1); }
   });
 
   render();
