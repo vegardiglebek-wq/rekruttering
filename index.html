@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kravprofil – veiviser for rekruttering</title>
+<meta name="description" content="En stegvis guide for ledere som skal sette kriterier for en ny medarbeider og skrive en god stillingsannonse.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Charis+SIL:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper-0:#FFFFFF;--surface-sunken:#F3F2EF;
+  --ink-0:#121212;--ink-1:#2C2A24;--ink-2:#57534A;--ink-3:#8A857A;
+  --line-1:#D9D9D9;--line-2:#B3B3B3;
+  --accent:#1D4E89;
+  --success:#2F6B4F;
+  --focus-ring:0 0 0 3px rgba(29,78,137,.24);
+  --serif:"Charis SIL","Charter","Georgia",serif;
+  --sans:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink-1);font-family:var(--serif);font-size:18px;line-height:1.65}
+a{color:var(--accent);text-underline-offset:3px}a:hover{color:var(--ink-0)}
+.topbar{height:6px;background:var(--accent)}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+header.site{padding:64px 0 40px;border-bottom:1px solid var(--ink-0);display:flex;flex-direction:column;gap:16px}
+.kicker{margin:0;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--accent)}
+.kicker a{color:var(--accent)}
+h1{margin:0;font-weight:700;font-size:clamp(36px,6vw,56px);line-height:1.08;letter-spacing:-.02em;color:var(--ink-0)}
+.lead{margin:0;font-size:21px;line-height:1.55;max-width:46ch;color:var(--ink-2)}
+h2{margin:0;font-weight:700;font-size:clamp(28px,4vw,34px);line-height:1.18;letter-spacing:-.012em;color:var(--ink-0)}
+h3{margin:0;font-weight:400;font-size:21px;line-height:1.3;color:var(--ink-0)}
+.bar{display:block;width:40px;height:5px;background:var(--accent)}
+.stack{display:flex;flex-direction:column}
+.g8{gap:8px}.g12{gap:12px}.g16{gap:16px}.g20{gap:20px}.g28{gap:28px}
+p{margin:0}
+.muted{color:var(--ink-2)}
+nav.progress ol{list-style:none;margin:0;padding:24px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+nav.progress button{width:100%;min-height:44px;background:transparent;border:0;border-top:4px solid var(--line-1);border-radius:0;cursor:pointer;text-align:left;display:flex;align-items:baseline;gap:8px;padding:12px 0;font-family:var(--sans);font-size:14px;color:var(--ink-3)}
+nav.progress button .lbl{text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:4px}
+nav.progress button.done{border-top-color:var(--ink-3);color:var(--ink-2)}
+nav.progress button.active{border-top-color:var(--accent);color:var(--ink-0);font-weight:500}
+nav.progress button.active .num{color:var(--accent)}
+nav.progress button:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+main{padding:56px 0 0}
+.tips{background:var(--surface-sunken);border-radius:4px;padding:20px 24px}
+.tips ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.label{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--ink-0)}
+.hint{font-family:var(--sans);font-size:13px;color:var(--ink-3)}
+.eyebrow{font-family:var(--sans);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+details{border-top:1px solid var(--line-1);border-bottom:1px solid var(--line-1);padding:16px 0}
+summary{cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:500;color:var(--ink-0)}
+.examplebox{background:#fff;border:1px solid var(--line-1);border-radius:4px;padding:20px 24px}
+.pre{white-space:pre-line}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;padding-top:16px}
+.grid3 ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:16px;line-height:1.5}
+.field{display:flex;flex-direction:column;gap:6px}
+input[type=text],textarea{font-family:var(--sans);font-size:15px;line-height:1.4;color:var(--ink-0);background:#fff;padding:10px 12px;width:100%;border:1px solid var(--line-2);border-radius:2px;outline:none;transition:border-color .14s,box-shadow .14s}
+textarea{resize:vertical}
+input[type=text]:focus,textarea:focus{border-color:var(--accent);box-shadow:var(--focus-ring)}
+.prefix{font-size:21px;line-height:1.3;color:var(--ink-0);margin-bottom:-16px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{font-family:var(--sans);font-weight:500;letter-spacing:.01em;display:inline-flex;align-items:center;justify-content:center;border-radius:2px;border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;font-size:16px;padding:14px 28px;min-height:52px;transition:background .14s,color .14s}
+.btn:active{opacity:.86}
+.btn:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+.btn-primary{background:var(--ink-0);color:#FBF9F5}.btn-primary:hover{background:var(--ink-1);color:#FBF9F5}
+.btn-secondary{background:transparent;color:var(--ink-0);border-color:var(--ink-0)}.btn-secondary:hover{background:var(--surface-sunken);color:var(--ink-0)}
+.btn-ghost{background:transparent;color:var(--ink-1)}.btn-ghost:hover{background:var(--surface-sunken)}
+.btn-link{background:none;border:0;padding:0;min-height:auto;color:var(--accent);text-decoration:underline;text-underline-offset:3px;font-size:15px}
+.doc{background:#fff;border:1px solid var(--line-1);border-radius:4px;padding:clamp(24px,5vw,48px);display:flex;flex-direction:column;gap:28px}
+.doc .overskrift{font-size:18px;line-height:1.4;font-style:italic;color:var(--ink-2);margin-bottom:-16px}
+.doc h3{font-size:26px;line-height:1.25}
+.doc .sec{display:flex;flex-direction:column;gap:10px}
+.doc .sec+.sec{border-top:1px solid var(--line-1);padding-top:24px}
+.doc ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;line-height:1.6}
+.empty{font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink-3)}
+.status{min-height:22px;margin-top:-12px;font-family:var(--sans);font-size:14px;color:var(--success)}
+.msgbox{background:var(--surface-sunken);border-radius:4px;padding:24px}
+.msgbox p.pre{font-size:16px;line-height:1.6}
+footer.site{margin:96px 0 0;padding:24px 0 96px;border-top:1px solid var(--ink-0);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;font-family:var(--sans);font-size:14px;color:var(--ink-2)}
+.restart{border-top:1px solid var(--line-1);padding-top:24px}
+@media (max-width:560px){nav.progress button{font-size:12px;gap:4px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="topbar" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="site">
+    <p class="kicker">Rekruttering | Kravprofil | <a href="om.html">Om</a></p>
+    <h1>Hvem leter du etter?</h1>
+    <p class="lead">Fire korte steg: behovet, oppgavene, kravene og erfaringen du ønsker. Til slutt får du en tekst du kan dele med en kollega.</p>
+  </header>
+  <nav class="progress" aria-label="Fremdrift"><ol id="progress"></ol></nav>
+  <main id="app"></main>
+  <footer class="site">
+    <span>Kravprofil – en guide for deg som skal rekruttere</span>
+    <a href="om.html">Om denne guiden</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var SECTIONS = [
+    {
+      key: 'behov', nr: 1, stage: 'Behov', heading: 'Behovet',
+      title: 'Hvilke behov skal rollen dekke?',
+      intro: 'Start med hvorfor. Hva mangler i dag, og hva blir bedre når rollen er på plass?',
+      tips: ['Hva skjer hvis stillingen står tom i et halvt år?', 'Hvem merker det først når behovet er dekket?', 'Er behovet nytt, eller tar rollen over etter noen?'],
+      fieldLabel: 'Beskriv behovet',
+      placeholder: 'For eksempel: Vi har flere prosjekter enn vi klarer å følge opp, og trenger noen som samler trådene på tvers av teamene.',
+      hint: 'Skriv fritt. Du kan justere alt senere.',
+      example: 'Kommunen har startet tolv digitaliseringsprosjekter, men ingen har ansvar for helheten. Flere løsninger blir ferdige uten å bli tatt i bruk. Vi trenger en som samler trådene og sørger for at innbyggerne merker forskjellen.',
+      avoid: '«Vi er inne i en spennende utviklingsfase og søker en dyktig medarbeider.» Det sier ikke hvilket problem rollen skal løse.'
+    },
+    {
+      key: 'bidrag', nr: 2, stage: 'Bidrag', heading: 'Dette skal du bidra med',
+      title: 'Hva skal kandidaten bidra med?',
+      intro: 'Beskriv typiske arbeidsoppgaver og ansvar. Tenk på en vanlig uke, ikke en perfekt uke.',
+      tips: ['Hvilke oppgaver tar mest tid?', 'Hva skal personen ha ansvar for alene, og hva sammen med andre?', 'Hva bør være på plass etter det første året?'],
+      fieldLabel: 'Oppgaver og ansvar',
+      placeholder: 'For eksempel: Planlegge og følge opp prosjekter, lede ukentlige statusmøter, rapportere til ledergruppen.',
+      hint: 'Gjerne én oppgave per linje.',
+      example: 'Du skal\n– lede tre til fem prosjekter fra idé til drift\n– samarbeide med fagenhetene om behov og prioriteringer\n– følge opp leverandører og budsjett\n– rapportere til kommunaldirektøren hver måned',
+      avoid: '«Diverse oppgaver innen prosjektarbeid og andre oppgaver som måtte tilfalle.» Start heller hver oppgave med et verb, og vær konkret.'
+    },
+    {
+      key: 'krav', nr: 3, stage: 'Krav', heading: 'Dette må du ha',
+      title: 'Hvilke krav er essensielle?',
+      intro: 'Skill mellom må og bør. Skriv bare det som er helt nødvendig for å gjøre jobben.',
+      tips: ['Ville du takket nei til en ellers sterk kandidat uten dette?', 'Kan kravet læres i løpet av de første månedene?', 'Utelukker kravet gode kandidater uten god grunn?'],
+      fieldLabel: 'Essensielle krav',
+      placeholder: 'Ett krav per linje, for eksempel:\nRelevant høyere utdanning\nGod skriftlig fremstillingsevne på norsk',
+      hint: 'Ett krav per linje. Hver linje blir et punkt i teksten.',
+      isList: true,
+      example: 'Høyere utdanning innen relevant fag, eller tilsvarende erfaring\nErfaring med å lede prosjekter\nGode norskkunnskaper, muntlig og skriftlig',
+      avoid: '«Norsk som morsmål» (kan ikke kreves lovlig), «minst ti års erfaring» uten god grunn, og personlighetsord som «sulten» eller «utadvendt». Lange kravlister skremmer bort gode søkere.'
+    },
+    {
+      key: 'erfaring', nr: 4, stage: 'Erfaring', heading: 'Ønsket erfaring',
+      title: 'Hvilken erfaring ønsker du hos kandidaten?',
+      intro: 'Fullfør setningen under. Dette er ønsker, ikke krav, og det er her kandidaten kjenner seg igjen.',
+      tips: ['Hva slags situasjoner bør kandidaten ha stått i før?', 'Hvilke egenskaper har de som lykkes i teamet i dag?', 'Hva ville gjort kandidaten til et tydelig førstevalg?'],
+      fieldLabel: 'Fullfør setningen',
+      placeholder: 'erfaring fra å lede prosjekter med mange interessenter, og som trives med å skape struktur der det mangler.',
+      hint: 'Start med små bokstaver, så henger setningen sammen.',
+      hasPrefix: true,
+      example: 'Vi ser etter deg som har erfaring med å få nye løsninger tatt i bruk, ikke bare utviklet. Du liker å forklare, og du blir ikke stresset av at mange vil noe ulikt. Du trenger ikke kunne alt dette for å søke.',
+      avoid: '«… en brennende lidenskap og evne til å jobbe i et hektisk tempo.» Beskriv situasjoner og kompetanse, ikke personlighet.'
+    }
+  ];
+
+  function blank() { return { behov: '', bidrag: '', krav: '', erfaring: '' }; }
+  var st = { step: 0, tittel: '', overskrift: '', values: blank(), extras: blank() };
+
+  var app = document.getElementById('app');
+  var progress = document.getElementById('progress');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function clean(s) { return (s || '').replace(/\s+$/, ''); }
+  function isEmpty(s) { return !(s || '').trim(); }
+  function listItems(s) {
+    return clean(s).split('\n').map(function (l) { return l.replace(/^\s*[-–•*]\s*/, '').trim(); }).filter(Boolean);
+  }
+  function erfaringText(s) { return 'Vi ser etter deg som har ' + clean(s).replace(/^\s*(…|\.\.\.)\s*/, ''); }
+
+  function secIndex() { return Math.min(Math.floor(st.step / 2), 3); }
+  function isDone() { return st.step >= 8; }
+
+  function go(step) { st.step = step; render(); window.scrollTo({ top: 0 }); }
+
+  /* ---------- progress ---------- */
+  function renderProgress() {
+    var stageIdx = isDone() ? 4 : secIndex();
+    var labels = SECTIONS.map(function (s) { return s.stage; }).concat(['Del']);
+    progress.innerHTML = labels.map(function (label, i) {
+      var active = i === stageIdx;
+      var done = i < 4 && !isEmpty(st.values[SECTIONS[i].key]);
+      var cls = active ? 'active' : (done ? 'done' : '');
+      return '<li style="display:flex"><button type="button" class="' + cls + '" data-stage="' + i + '"' +
+        (active ? ' aria-current="step"' : '') + ' aria-label="Gå til steg ' + (i + 1) + ': ' + label + '">' +
+        '<span class="num">' + (i + 1) + '</span><span class="lbl">' + label + '</span></button></li>';
+    }).join('');
+  }
+  progress.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-stage]');
+    if (!b) return;
+    var i = +b.getAttribute('data-stage');
+    go(i === 4 ? 8 : i * 2);
+  });
+
+  /* ---------- document preview ---------- */
+  function docHtml(upTo) {
+    var html = '';
+    if (st.overskrift.trim()) html += '<p class="overskrift">' + esc(st.overskrift.trim()) + '</p>';
+    html += '<h3>' + esc(st.tittel.trim() || 'Kravprofil') + '</h3>';
+    for (var i = 0; i <= upTo; i++) {
+      var sec = SECTIONS[i], v = st.values[sec.key];
+      html += '<div class="sec"><p class="eyebrow">' + esc(sec.heading) + '</p>';
+      if (isEmpty(v)) {
+        html += '<p class="empty">Ikke fylt ut ennå. Velg «' + sec.stage + '» øverst for å skrive.</p>';
+      } else if (sec.isList) {
+        html += '<ul>' + listItems(v).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>';
+      } else {
+        html += '<p class="pre">' + esc(sec.hasPrefix ? erfaringText(v) : clean(v)) + '</p>';
+      }
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function plainText() {
+    var out = [];
+    if (st.overskrift.trim()) out.push(st.overskrift.trim());
+    out.push(st.tittel.trim() || 'Kravprofil');
+    SECTIONS.forEach(function (sec) {
+      var v = st.values[sec.key];
+      out.push('', sec.heading.toUpperCase());
+      if (isEmpty(v)) out.push('[Ikke fylt ut]');
+      else if (sec.isList) listItems(v).forEach(function (l) { out.push('– ' + l); });
+      else if (sec.hasPrefix) out.push(erfaringText(v));
+      else out.push(clean(v));
+    });
+    return out.join('\n');
+  }
+
+  function colleagueMessage() {
+    var t = st.tittel.trim();
+    return 'Hei,\n\nJeg holder på med kravprofilen for ' + (t ? 'stillingen som ' + t.toLowerCase() : 'en ny stilling') +
+      '. Kan du lese gjennom og si fra om to ting:\n1. Hva mangler?\n2. Hva kan strykes eller er for strengt?\n\nTeksten ligger under. Takk for hjelpen.';
+  }
+
+  /* ---------- steps ---------- */
+  var TITLE_BLOCK =
+    '<div class="stack g20" style="padding-top:8px">' +
+      '<div class="stack g8"><h3>Tittel og overskrift</h3>' +
+      '<p class="muted" style="font-size:16px;line-height:1.6;max-width:60ch">Stillingstittelen sier hva jobben er. Overskriften får folk til å lese videre. Begge er valgfrie her, men gjør teksten lettere å dele.</p></div>' +
+      '<div class="field"><label class="label" for="rolletittel">Stillingstittel</label>' +
+      '<input type="text" id="rolletittel" data-bind="tittel" placeholder="For eksempel: Prosjektleder, digitale innbyggertjenester">' +
+      '<span class="hint">Kort og kjønnsnøytral. Ta med fagfelt og gjerne nivå.</span></div>' +
+      '<div class="field"><label class="label" for="overskrift">Annonseoverskrift</label>' +
+      '<input type="text" id="overskrift" data-bind="overskrift" placeholder="For eksempel: Vil du gjøre det enklere å søke om barnehageplass?">' +
+      '<span class="hint">Et spørsmål eller en påstand om hva jobben handler om. Ikke det samme som tittelen.</span></div>' +
+      '<details><summary>Se eksempler på titler og overskrifter</summary><div class="grid3">' +
+        '<div class="stack g8"><p class="eyebrow">Gode titler</p><ul><li>Prosjektleder, digitale innbyggertjenester</li><li>Seniorrådgiver, lønn og personal</li><li>Junior regnskapsfører</li><li>Brannkonstabel (ikke «brannmann»)</li></ul></div>' +
+        '<div class="stack g8"><p class="eyebrow">Gode overskrifter</p><ul><li>Vil du gjøre det enklere å søke om barnehageplass?</li><li>Vi trenger noen som får prosjektene i mål</li><li>Hjelp oss å gi lederne bedre verktøy</li></ul></div>' +
+        '<div class="stack g8"><p class="eyebrow">Unngå</p><ul class="muted"><li>Fantasititler som «rockestjerne» eller «guru»</li><li>Interne koder og forkortelser, som «Rådgiver II»</li><li>Utropstegn og «spennende mulighet i et dynamisk miljø»</li></ul></div>' +
+      '</div></details>' +
+    '</div>';
+
+  function inputStep(sec) {
+    var v = st.values[sec.key];
+    return '<section class="stack g28">' +
+      '<div class="stack g12"><span class="bar" aria-hidden="true"></span>' +
+      '<p class="kicker">Steg ' + sec.nr + ' av 4</p>' +
+      '<h2>' + esc(sec.title) + '</h2><p style="max-width:60ch">' + esc(sec.intro) + '</p></div>' +
+      '<div class="tips stack g8"><p class="label">Spørsmål som kan hjelpe</p><ul>' +
+        sec.tips.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>' +
+      '<details><summary>Se et eksempel</summary><div class="stack g16" style="padding-top:16px">' +
+        '<div class="examplebox stack g8"><p class="eyebrow">Slik kan det skrives</p><p class="pre" style="font-size:17px;line-height:1.6">' + esc(sec.example) + '</p></div>' +
+        '<p class="muted" style="font-family:var(--sans);font-size:14px;line-height:1.5"><span style="font-weight:500;color:var(--ink-0)">Unngå: </span>' + esc(sec.avoid) + '</p>' +
+      '</div></details>' +
+      (st.step === 0 ? TITLE_BLOCK : '') +
+      (sec.hasPrefix ? '<p class="prefix">Vi ser etter deg som har …</p>' : '') +
+      '<div class="field"><label class="label" for="svar">' + esc(sec.fieldLabel) + '</label>' +
+      '<textarea id="svar" rows="7" data-bind="value" placeholder="' + esc(sec.placeholder) + '"></textarea>' +
+      '<span class="hint">' + esc(sec.hint) + '</span></div>' +
+      '<div class="actions">' +
+        '<button type="button" class="btn btn-primary" id="nextBtn" data-act="next">' + (isEmpty(v) ? 'Hopp over og se utkastet' : 'Vis utkastet') + '</button>' +
+        (st.step > 0 ? '<button type="button" class="btn btn-ghost" data-act="back">Tilbake</button>' : '') +
+      '</div></section>';
+  }
+
+  function confirmStep(sec, idx) {
+    return '<section class="stack g28">' +
+      '<div class="stack g12"><span class="bar" aria-hidden="true"></span>' +
+      '<p class="kicker">Steg ' + sec.nr + ' av 4 · Se over</p>' +
+      '<h2>Slik ser det ut så langt</h2><p style="max-width:60ch">Les gjennom utkastet. Stemmer det med det du har i tankene?</p></div>' +
+      '<article class="doc" aria-label="Utkast hittil">' + docHtml(idx) + '</article>' +
+      '<div class="field"><label class="label" for="tillegg">Noe mer du vil legge til eller endre?</label>' +
+      '<textarea id="tillegg" rows="3" data-bind="extra" placeholder="Valgfritt. La feltet stå tomt hvis du er fornøyd."></textarea>' +
+      '<span class="hint">Det du skriver her, legges til under «' + esc(sec.heading.toLowerCase()) + '». Vil du skrive om hele teksten, velg «Endre det du skrev».</span></div>' +
+      '<div class="actions">' +
+        '<button type="button" class="btn btn-primary" data-act="confirm">' + (idx === 3 ? 'Bekreft og se hele teksten' : 'Bekreft og gå videre') + '</button>' +
+        '<button type="button" class="btn btn-secondary" data-act="back">Endre det du skrev</button>' +
+      '</div></section>';
+  }
+
+  function doneStep() {
+    var subject = 'Innspill på kravprofil' + (st.tittel.trim() ? ': ' + st.tittel.trim() : '');
+    var mailto = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(colleagueMessage() + '\n\n---\n\n' + plainText());
+    return '<section class="stack g28">' +
+      '<div class="stack g12"><span class="bar" aria-hidden="true"></span><p class="kicker">Ferdig</p>' +
+      '<h2>Fint. Nå er kravprofilen klar for et nytt blikk.</h2>' +
+      '<p style="max-width:60ch">Kopier teksten og del den med en kollega. Be om innspill på to ting: hva som mangler, og hva som kan strykes.</p></div>' +
+      '<article class="doc" aria-label="Hele kravprofilen">' + docHtml(3) + '</article>' +
+      '<div class="actions">' +
+        '<button type="button" class="btn btn-primary" data-act="copy">Kopier teksten</button>' +
+        '<a class="btn btn-secondary" href="' + esc(mailto) + '">Be om innspill på e-post</a>' +
+        '<button type="button" class="btn btn-ghost" data-act="edit">Gå tilbake og juster</button>' +
+      '</div>' +
+      '<p class="status" role="status" id="status"></p>' +
+      '<div class="msgbox stack g8"><p class="label">Forslag til melding til kollegaen</p><p class="pre">' + esc(colleagueMessage()) + '</p></div>' +
+      '<div class="restart"><button type="button" class="btn btn-link" data-act="reset">Start en ny kravprofil</button></div>' +
+    '</section>';
+  }
+
+  function render() {
+    renderProgress();
+    var idx = secIndex(), sec = SECTIONS[idx];
+    if (isDone()) app.innerHTML = doneStep();
+    else if (st.step % 2 === 0) app.innerHTML = inputStep(sec);
+    else app.innerHTML = confirmStep(sec, idx);
+    // set field values safely (not via HTML)
+    app.querySelectorAll('[data-bind]').forEach(function (el) {
+      var b = el.getAttribute('data-bind');
+      if (b === 'tittel') el.value = st.tittel;
+      else if (b === 'overskrift') el.value = st.overskrift;
+      else if (b === 'value') el.value = st.values[sec.key];
+      else if (b === 'extra') el.value = st.extras[sec.key];
+    });
+  }
+
+  app.addEventListener('input', function (e) {
+    var el = e.target, b = el.getAttribute('data-bind');
+    if (!b) return;
+    var key = SECTIONS[secIndex()].key;
+    if (b === 'tittel') st.tittel = el.value;
+    else if (b === 'overskrift') st.overskrift = el.value;
+    else if (b === 'value') {
+      st.values[key] = el.value;
+      var nb = document.getElementById('nextBtn');
+      if (nb) nb.textContent = isEmpty(el.value) ? 'Hopp over og se utkastet' : 'Vis utkastet';
+    }
+    else if (b === 'extra') st.extras[key] = el.value;
+  });
+
+  function copyText() {
+    var text = plainText(), status = document.getElementById('status');
+    function ok() { status.textContent = 'Teksten er kopiert. Lim den inn der du vil dele den.'; }
+    function fail() { status.textContent = 'Kunne ikke kopiere automatisk. Marker teksten og kopier den selv.'; }
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        var res = document.execCommand('copy'); document.body.removeChild(ta);
+        res ? ok() : fail();
+      } catch (e) { fail(); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback);
+    else fallback();
+  }
+
+  app.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]');
+    if (!b) return;
+    var act = b.getAttribute('data-act'), sec = SECTIONS[secIndex()];
+    if (act === 'next') go(st.step + 1);
+    else if (act === 'back') go(Math.max(0, st.step - 1));
+    else if (act === 'confirm') {
+      var extra = st.extras[sec.key].trim();
+      if (extra) {
+        st.values[sec.key] = clean(st.values[sec.key]) + (isEmpty(st.values[sec.key]) ? '' : (sec.hasPrefix ? ' ' : '\n')) + extra;
+        st.extras[sec.key] = '';
+      }
+      go(st.step + 1);
+    }
+    else if (act === 'edit') go(7);
+    else if (act === 'copy') copyText();
+    else if (act === 'reset') { st = { step: 0, tittel: '', overskrift: '', values: blank(), extras: blank() }; go(0); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
